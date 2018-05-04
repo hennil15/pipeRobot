@@ -1,6 +1,8 @@
 #ifndef _POSE_H_
 #define  _POSE_H_
 
+//holy shit this code is useless at the moment..
+
 #include <stdint.h>
 //#include <cmath>
 

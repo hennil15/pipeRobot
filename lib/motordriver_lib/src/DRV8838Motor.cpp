@@ -92,7 +92,7 @@ void DRV8838Motor::driveTo(float position, uint8_t tempo)
 void DRV8838Motor::stopMotor()
 {
    float pwmTempo = getRealTempo()*2.55;
-   uint8_t desiredAcceleration = DRV8838Motor::getAcceleration()
+   uint8_t desiredAcceleration = DRV8838Motor::getAcceleration();
    while(pwmTempo > 0) //decellerates at a rate set by acceleration variable
    {
      pwmTempo--;

@@ -29,6 +29,7 @@ void A4990Motor::drive(bool dir, uint8_t tempo)
      A4990Motor::stopMotor();
    }
    else if(dir != lastDir) //if direction is changed, stop and turn
+   {
      A4990Motor::stopMotor();
      A4990Motor::setDirection(dir);
      A4990Motor::setTempo(tempo);
@@ -38,6 +39,7 @@ void A4990Motor::drive(bool dir, uint8_t tempo)
    {
      A4990Motor::changeTempo(tempo); //if direction is the same, change tempo
    }
+ }
 
 void A4990Motor::drive(float distance, bool dir, uint8_t tempo) //distance in rev, dir 0 =CW - 1=CCW, tempo 0-100
 {

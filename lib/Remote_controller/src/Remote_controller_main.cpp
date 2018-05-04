@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <FlexCan.h>
+#include <FlexCAN.h>
 #include <A4990Motor.h>
 #include <Remote_controller_CAN_messages.h>
 

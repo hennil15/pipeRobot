@@ -8,8 +8,8 @@ class Motor
 {
 public:
 
-//virtual Motor() {};
-virtual ~ Motor() {}; //constructor
+virtual Motor() {};
+virtual ~ Motor() {}; //destructor
 
 virtual void setTempo(uint8_t tempo) //set the pre defined standard tempo (0-100%)
 {

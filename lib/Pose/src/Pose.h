@@ -1,26 +1,26 @@
 #ifndef _POSE_H_
 #define  _POSE_H_
 
+//holy shit this code is useless at the moment..
+
 #include <stdint.h>
-//#include <cmath>
+#include <cmath>
 
 class Pose
 {
   private:
-    int16_t _ref1[3];
-    int16_t _ref2[3];
-    float _diff[3];
-    float _sensitivity;
-
+    float _transformationToModule[3][3];
+    float _transformationToGravity[3][3];
+    float _moduleVector[3];
+    void convertToUnitVector(float * rawVector);
   public:
     Pose();
-    void input1(int16_t x, int16_t y, int16_t z);
-    void input2(int16_t x, int16_t y, int16_t z);
-    float diffX();
-    float diffY();
-    float diffZ();
+    void setImuPose(const float * transformationMatrix);
+    void imuIntput(const float * imuVector);
+    float getXdir();
+    float getYdir();
+    float getZdir();
 
-    void setSensitivity(uint8_t fs);
 };
 
 

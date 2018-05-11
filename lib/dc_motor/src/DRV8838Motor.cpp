@@ -131,30 +131,30 @@ void DRV8838Motor::regulatedStop(const float & desiredPosition)
 
   float pwm;
 
-  int i = 0;
+  // uint16_t i = 0;
   while(err > tolerance || err < -tolerance) //JAKOB! Argumentet må være steady state!
   {
     pwm = pid.output(err); //sets pwm = output from PID controller
 
-    if(pwm>=0) {analogWrite(pwmPin_, pwm);}
+    if(pwm>=0) {analogWrite(pwmPin_, pwm);} //pwm is a signed value. The sign dictates the direction the motor should rotate
     else
     {
-      //if negative, the direction has to be changed before writing absolute value to pwmPin.
+      //if negative, the direction has to be changed before writing the absolute value to pwmPin.
       digitalWrite(dirPin_,0);
       pwm = -pwm;
       analogWrite(pwmPin_, pwm);
     }
 
     err = desiredPosition - encoder.getPosition();
-    ++i;
 
     //*****for tuning/debugging****:
-    /*if(i>1000)
-    {
-      Serial.print(desiredPosition); Serial.print("\t");
-      Serial.println(encoder.getPosition());
-      i = 0;
-    }*/
+    //++i;
+    // if(i>1000)
+    // {
+    //   Serial.print(desiredPosition); Serial.print("\t");
+    //   Serial.println(encoder.getPosition());
+    //   i = 0;
+    // }
 }
 pid.loopDone(); //ends PID control
 analogWrite(pwmPin_,0); //sets tempo to 0.

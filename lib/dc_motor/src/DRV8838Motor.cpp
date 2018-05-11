@@ -125,14 +125,15 @@ void DRV8838Motor::regulatedStop(const float & desiredPosition)
   float maxTempo = DRV8838Motor::getTempo()*2.55;
   pid.begin(127,1,0); //initializes PID with inputs P,I,D
   pid.setSaturation(-maxTempo,maxTempo); //sets speed limits for the PID
-  float momentaryPosition = encoder.getPosition(); //gets the current absolute position
-  float tolerance = 0.001; //sets tolerance for error in revs
-  float err = desiredPosition - momentaryPosition;
+  pid.setErrorBand(0.001);  //sets how close to the desired position (in revs) the motor has to reach
+  // pid.setSettlingMargin(10); //10 is default. Value is set during tuning of PID
 
+  float momentaryPosition = encoder.getPosition(); //gets the current absolute position
+  float err = desiredPosition - momentaryPosition;
   float pwm;
 
   // uint16_t i = 0;
-  while(err > tolerance || err < -tolerance) //JAKOB! Argumentet må være steady state!
+  while(!pid.steadyState()) //it exits the control-loop when it arrives at steady state
   {
     pwm = pid.output(err); //sets pwm = output from PID controller
 

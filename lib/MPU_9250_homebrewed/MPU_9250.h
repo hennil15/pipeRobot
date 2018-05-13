@@ -29,7 +29,7 @@ class MPU_9250
 		const int16_t trans_x[3] = {0, 1, 0};
 		const int16_t trans_y[3] = {1, 0, 0};
 		const int16_t trans_z[3] = {0, 0, -1};
-		int16_t _buffer[3];
+		int16_t _buffer[3];		//buffer for temporal storage of raw data
 
 	public:
 		MPU_9250();

@@ -16,6 +16,7 @@ _dt_us(500), _steadyState(false), _ssCounter(0), _settlingMargin(10)
 
 float Simple_PID::output(const float & err)
 {
+  //warning! micros() overflows after 71.6 minutes (it's an uint32_t type). Code will have runtime errors after that
   if((micros()-_last_dt) > _dt_us)
   {
     _last_dt = micros();

@@ -121,7 +121,7 @@ void MPU_9250::readMag()
 	//Serial.println("readMag()");
 	uint8_t data[7];
 	getFromAK8963(hxl, 7, data);
-	//getBytes(ext_sens_data_00, 6, data);
+	// getBytes(ext_sens_data_00, 6, data);
 	mag[0] = static_cast<int16_t>(data[1]) << 8 | static_cast<int16_t>(data[0]);	//	The magnetometer orders its registers with the low byte first
 	mag[1] = static_cast<int16_t>(data[3]) << 8 | static_cast<int16_t>(data[2]);
 	mag[2] = static_cast<int16_t>(data[5]) << 8 | static_cast<int16_t>(data[4]);

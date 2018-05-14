@@ -48,7 +48,6 @@ void CAN_message_handler::removeIdToFilter(CANIds id)
   {
     if(_idsToFilter[i] == id)
     {
-      // "remove this id somehow"
       _idsToFilter[i] = CANIds::dummy;
       idPosition = i;
     }

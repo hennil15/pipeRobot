@@ -125,36 +125,37 @@ void DRV8838Motor::regulatedStop(const float & desiredPosition)
   float maxTempo = DRV8838Motor::getTempo()*2.55;
   pid.begin(127,1,0); //initializes PID with inputs P,I,D
   pid.setSaturation(-maxTempo,maxTempo); //sets speed limits for the PID
-  float momentaryPosition = encoder.getPosition(); //gets the current absolute position
-  float tolerance = 0.001; //sets tolerance for error in revs
-  float err = desiredPosition - momentaryPosition;
+  pid.setErrorBand(0.001);  //sets how close to the desired position (in revs) the motor has to reach
+  // pid.setSettlingMargin(10); //10 is default. Value is set during tuning of PID
 
+  float momentaryPosition = encoder.getPosition(); //gets the current absolute position
+  float err = desiredPosition - momentaryPosition;
   float pwm;
 
-  int i = 0;
-  while(err > tolerance || err < -tolerance) //JAKOB! Argumentet må være steady state!
+  // uint16_t i = 0;
+  while(!pid.steadyState()) //it exits the control-loop when it arrives at steady state
   {
     pwm = pid.output(err); //sets pwm = output from PID controller
 
-    if(pwm>=0) {analogWrite(pwmPin_, pwm);}
+    if(pwm>=0) {analogWrite(pwmPin_, pwm);} //pwm is a signed value. The sign dictates the direction the motor should rotate
     else
     {
-      //if negative, the direction has to be changed before writing absolute value to pwmPin.
+      //if negative, the direction has to be changed before writing the absolute value to pwmPin.
       digitalWrite(dirPin_,0);
       pwm = -pwm;
       analogWrite(pwmPin_, pwm);
     }
 
     err = desiredPosition - encoder.getPosition();
-    ++i;
 
     //*****for tuning/debugging****:
-    /*if(i>1000)
-    {
-      Serial.print(desiredPosition); Serial.print("\t");
-      Serial.println(encoder.getPosition());
-      i = 0;
-    }*/
+    //++i;
+    // if(i>1000)
+    // {
+    //   Serial.print(desiredPosition); Serial.print("\t");
+    //   Serial.println(encoder.getPosition());
+    //   i = 0;
+    // }
 }
 pid.loopDone(); //ends PID control
 analogWrite(pwmPin_,0); //sets tempo to 0.

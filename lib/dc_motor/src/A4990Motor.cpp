@@ -165,26 +165,31 @@ void A4990Motor::regulatedStop(const float & desiredPosition)
   float maxTempo = A4990Motor::getTempo()*2.55;
   pid.begin(127, 1, 0);
   pid.setSaturation(-maxTempo, maxTempo);
+  pid.setErrorBand(0.001);  //sets how close to the desired position (in revs) the motor has to reach
+  // pid.setSettlingMargin(10); //10 is default. Value is set during tuning of PID
+
   float momentaryPosition = encoder.getPosition();
-  float tolerance = 0.001;
   float err = desiredPosition - momentaryPosition;
   float pwm;
-  int i = 0;
-  while(err > tolerance || err < -tolerance) //Sudo::JAKOB fix!
+  // uint16_t i = 0;
+
+  while(!pid.steadyState()) //it exits the control-loop when it arrives at steady state
   {
     pwm = pid.output(err);
     if(pwm >= 0)  {analogWrite(inHigh_, pwm);}
     else  {analogWrite(inLow_, 255 + pwm);}
     err = desiredPosition - encoder.getPosition();
-    // errSum += err;
-    ++i;
-    if(i > 1000)
-    {
-      Serial.print(desiredPosition); Serial.print("\t");
-      Serial.println(encoder.getPosition());
-      i = 0;
-    }
+
+    //*****for tuning/debugging****:
+    // ++i;
+    // if(i > 1000)
+    // {
+    //   Serial.print(desiredPosition); Serial.print("\t");
+    //   Serial.println(encoder.getPosition());
+    //   i = 0;
+    // }
   }
+
   pid.loopDone();
   analogWrite(inHigh_, 0);
   analogWrite(inLow_, 255);

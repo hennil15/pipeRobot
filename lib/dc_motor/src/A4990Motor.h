@@ -9,8 +9,8 @@
 class A4990Motor : public Motor
 {
 public:
-  MagneticEncoder_2 encoder; //"has a " inheritance. Magneticencoder object.
-  Simple_PID pid; //"has a" inheritance. Simple_PID object.
+  MagneticEncoder_2 encoder; //"has a " composition. Magneticencoder object.
+  Simple_PID pid; //"has a" composition. Simple_PID object.
 
 A4990Motor(uint8_t inHigh, uint8_t inLow, uint8_t inA, uint8_t inB);
 
@@ -27,7 +27,7 @@ void changeTempo(uint8_t tempo);
 private:
   void regulatedStop(const float & desiredPosition);
   const float _stopDistance = 0.2;
-  uint8_t inHigh_; 
+  uint8_t inHigh_;
   uint8_t inLow_;
   //uint8_t EF1_;
   //uint8_t EF2_;

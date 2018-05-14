@@ -20,6 +20,16 @@ virtual uint8_t getTempo() //get the pre defined standard tempo (0-100%)
   return tempo_;
 }
 
+virtual void setRealTempo(uint8_t realTempo) //Sets the real tempo (0-100%)
+{
+  realTempo_ = realTempo;
+}
+
+virtual uint8_t getRealTempo() //return the real tempo (0-100%)
+{
+  return realTempo_;
+}
+
 virtual void setDirection(bool dir) //sets the direction
 {
   dir_ = dir;
@@ -48,22 +58,12 @@ virtual void startMotor()=0; //starts the motor with a set acceleration
 
 virtual void changeTempo(uint8_t tempo)=0;
 
-virtual void drive(bool dir, uint8_t tempo); // drive indefinately
+virtual void drive(bool dir, uint8_t tempo); // drive until told otherwise
 virtual void drive(float distance, bool dir, uint8_t tempo); //drives the robot a certain distance
 virtual void driveTo(float position, uint8_t tempo); //drive to absolute position
 
 
 private:
-
-  virtual void setRealTempo(uint8_t realTempo) //Sets the real tempo (0-100%)
-  {
-    realTempo_ = realTempo;
-  }
-
-  virtual uint8_t getRealTempo() //return the real tempo (0-100%)
-  {
-    return realTempo_;
-  }
 
   bool dir_;
   uint8_t tempo_;

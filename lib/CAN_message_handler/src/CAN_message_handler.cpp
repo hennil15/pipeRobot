@@ -24,7 +24,7 @@ CAN_message_handler::CAN_message_handler()
   {
     _idsToFilter[i] = alwaysFilter[i];
   }
-  _widthOfArray = 16;
+  _widthOfArray = 16; //keeps trach of how many IDs are stored in the _idsToFilter[] array
 }
 
 void CAN_message_handler::addIdToFilter(CANIds id)
@@ -48,11 +48,11 @@ void CAN_message_handler::removeIdToFilter(CANIds id)
   {
     if(_idsToFilter[i] == id)
     {
-      _idsToFilter[i] = CANIds::dummy;
+      _idsToFilter[i] = CANIds::dummy;  // the dummy Id can never occur on the can bus. Assigning it to the array is redundant however
       idPosition = i;
     }
   }
-  if(idPosition < --_widthOfArray)
+  if(idPosition < --_widthOfArray)  // if the removed Id was not at the end of the array, the elements that comes after it are moved on space to the left
   {
     for (uint16_t i = idPosition; i < _widthOfArray; ++i)
     {
@@ -61,6 +61,7 @@ void CAN_message_handler::removeIdToFilter(CANIds id)
   }
 }
 
+//checks if the incoming msg id corresponds to any of the relevant ones
 bool CAN_message_handler::msgIsRelevant(uint16_t msgId)
 {
   for(uint16_t i = 0; i < _widthOfArray; ++i)
@@ -71,6 +72,7 @@ bool CAN_message_handler::msgIsRelevant(uint16_t msgId)
   return false;
 }
 
+//identifies and returnes the message type based on its Id
 CAN_message_handler::CANMsgType CAN_message_handler::typeOfMsg(uint16_t msgId)
 {
   if(msgId >= CANIds::global_event_00 && msgId <= CANIds::global_event_15){
@@ -85,6 +87,7 @@ CAN_message_handler::CANMsgType CAN_message_handler::typeOfMsg(uint16_t msgId)
   return CANMsgType::noType;
 }
 
+//extracts the CAN data by calling the corresponding msg type decoder and assigning it in the appropriate struct
 void CAN_message_handler::extractCANData(CANMsgType msgType, const uint8_t * CANBuf)
 {
   switch (msgType) {
@@ -99,6 +102,7 @@ void CAN_message_handler::extractCANData(CANMsgType msgType, const uint8_t * CAN
   }
 }
 
+//encode the content of a msg-type-struct into an array that can be sent on the CAN-bus
 void CAN_message_handler::encodeCANData(CANMsgType msgType, uint8_t * CANBuf)
 {
   switch (msgType) {

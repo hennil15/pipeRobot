@@ -8,14 +8,14 @@ const uint8_t motorPwmPin = 5;
 const uint8_t motorDirPin = 0;
 const uint8_t encoderPinA = 22;
 const uint8_t encoderPinB = 21;
-DRV8838Motor motor(motorPwmPin, motorDirPin, 1, encoderPinA, encoderPinB);
-const bool fwd = false;
+DRV8838Motor motor(motorPwmPin, motorDirPin, encoderPinA, encoderPinB);
+const bool fwd = false; //the direction the motor turns in order to drive forward
 const bool bwd = !fwd;
 
 static CAN_message_t msg;
 CAN_message_handler msgHandler;
 
-bool msgForMe()
+bool msgForMe() //Checks if an incoming CAN-message is relevant
 {
   while(Can0.available())
   {
@@ -25,6 +25,8 @@ bool msgForMe()
   return false;
 }
 
+/*The translation modules only has implementations for two different messages; drive and stop
+the two next functions checks if the message is one or the other*/
 bool msgIsDrive()
 {
   return  (msgHandler.motorMsg.motorIs == msgHandler.motorMsg.metaData::receiver) &&
@@ -41,7 +43,9 @@ bool msgIsStop()
 
 void setup()
 {
-  Serial.begin(115200);
+  //Serial.begin(115200);
+
+  //setup for CAN-bus
   Can0.begin();
   msg.ext = 0;
   msg.len = 8;
@@ -51,7 +55,7 @@ void setup()
     msg.buf[i] = 0;
   }
 
-  msgHandler.addIdToFilter(msgHandler.CANIds::motor_03);
+  msgHandler.addIdToFilter(msgHandler.CANIds::motor_03); //adds motor_03 as a relavant CAN-id
 }
 
 void loop()
@@ -77,7 +81,7 @@ void loop()
         }
         else
         {
-          Serial.println("motorMsg was neither to drive or to stop");
+          //Serial.println("motorMsg was neither to drive or to stop");
         }
         break;
       default:

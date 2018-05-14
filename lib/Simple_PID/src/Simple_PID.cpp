@@ -40,7 +40,7 @@ float Simple_PID::output(const float & err)
   }
   //temporary fix to provide protection against overflow of micros()
   else if(_last_dt > micros())
-  {/*micros() has overflowed, so (micros()-_last_dt) won't be bigger than _dt_us until micros() approaches next overflow*/
+  {/*micros() has overflowed, so (micros()-_last_dt) won't be bigger than _dt_us until micros() approaches overflow again*/
     _last_dt = micros();
   }
   return _output;

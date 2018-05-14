@@ -12,20 +12,17 @@ const uint8_t motorYawPin1 = 21;
 const uint8_t motorYawPin2 = 9;
 const uint8_t encoderYawPinA = 23;
 const uint8_t encoderYawPinB = 22;
-A4990Motor motorPitch(motorPitchPin1, motorPitchPin2, 1, encoderPitchPinA, encoderPitchPinB);
-A4990Motor motorYaw(motorYawPin1, motorYawPin2, 1, encoderYawPinA, encoderYawPinB);
-const bool posPitch = true;
+A4990Motor motorPitch(motorPitchPin1, motorPitchPin2, encoderPitchPinA, encoderPitchPinB);
+A4990Motor motorYaw(motorYawPin1, motorYawPin2, encoderYawPinA, encoderYawPinB);
+const bool posPitch = true; //what way to rotate the motor to get positive pitch
 const bool negPitch = !posPitch;
-const bool posYaw = true;
+const bool posYaw = true;//what way to rotate the motor to get positive yaw
 const bool negYaw = !posYaw;
 
 static CAN_message_t msg;
 CAN_message_handler msgHandler;
 
-// msgHandler::CANIds pitchMotorId = msgHandler.CANIds::motor_01;
-// msgHandler::CANIds yawMotorId = msgHandler.CANIds::motor_02;
-
-bool msgForMe()
+bool msgForMe()//Checks if an incoming CAN-message is relevant
 {
   while(Can0.available())
   {
@@ -35,6 +32,8 @@ bool msgForMe()
   return false;
 }
 
+/*The bending module only has implementations for two different messages; drive and stop
+the two next functions checks if the message is one or the other*/
 bool msgIsDrive()
 {
   return  (msgHandler.motorMsg.motorIs == msgHandler.motorMsg.metaData::receiver) &&
@@ -48,14 +47,12 @@ bool msgIsStop()
           (msgHandler.motorMsg.msgIs == msgHandler.motorMsg.metaData::command) &&
           (msgHandler.motorMsg.commandIs == msgHandler.motorMsg.metaData::stop);
 }
-// msgHandler::CANIds msgIsFor()
-// {
-//   return msgHandler.CANIds::msg.id;
-// }
 
 void setup()
 {
-  Serial.begin(115200);
+  //Serial.begin(115200);
+
+  //setup for CAN-bus
   Can0.begin();
   msg.ext = 0;
   msg.len = 8;
@@ -91,7 +88,7 @@ void loop()
         }
         else
         {
-          Serial.println("motorMsg to pitchMotor was neither to drive or to stop");
+          //Serial.println("motorMsg to pitchMotor was neither to drive or to stop");
         }
         break;
       case msgHandler.CANIds::motor_02:
@@ -109,7 +106,7 @@ void loop()
         }
         else
         {
-          Serial.println("motorMsg to yawMotor was neither to drive or to stop");
+          //Serial.println("motorMsg to yawMotor was neither to drive or to stop");
         }
         break;
       default:

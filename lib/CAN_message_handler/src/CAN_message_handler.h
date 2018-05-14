@@ -1,7 +1,7 @@
 #ifndef CAN_MESSAGE_HANDLER_H_
 #define CAN_MESSAGE_HANDLER_H_
 
-#include <stdint.h>
+#include <cstdint>
 #include <CAN_motor_msg_decoder_encoder.h>
 
 class CAN_message_handler
@@ -71,8 +71,8 @@ public:
   };
 
   CAN_message_handler();
-  void addIdToFilter(CANIds id);
-  void removeIdToFilter(CANIds id);
+  void addIdToFilter(CANIds id);  // adds an id that is relevant for the microcontroller
+  void removeIdToFilter(CANIds id);// and the possibility to remove it if it was only temporary
   bool msgIsRelevant(uint16_t msgId); // checks msg id to see if it is relevant for the microcontroller
 
 
@@ -85,6 +85,7 @@ private:
   CAN_motor_msg_decoder_encoder motorMsgHandler;
   CANIds _idsToFilter[100];
   uint16_t _widthOfArray;
+  CANIds alwaysFilter[16];
 };
 
 #endif //CAN_MESSAGE_HANDLER_H_

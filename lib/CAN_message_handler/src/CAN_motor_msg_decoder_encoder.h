@@ -1,11 +1,11 @@
 #ifndef _CAN_MOTOR_MSG_DECODER_ENCODER_H_
 #define _CAN_MOTOR_MSG_DECODER_ENCODER_H_
 
-#include <stdint.h>
+#include <cstdint>
 
 struct decoded_motor_CAN_msg
 {
-  enum metaData
+  enum metaData //the content of the metaData buffer
   {
     sender,
     receiver,
@@ -29,8 +29,6 @@ class CAN_motor_msg_decoder_encoder
 {
 public:
   CAN_motor_msg_decoder_encoder();
-  // decoded_motor_CAN_msg motorMsg;
-  // decoded_motor_CAN_msg prepMotorMsg;
   decoded_motor_CAN_msg decodeMsg(const uint8_t * CANBufData);
   void encodeMsg(decoded_motor_CAN_msg msgToEncodeFrom, uint8_t * CANBufToEncode);
 };

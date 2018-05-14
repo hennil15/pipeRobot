@@ -11,12 +11,12 @@ const uint8_t driveTempo = 100;
 uint16_t tempId;
 
 //pins for buttons
-const uint8_t bUp = 23;//21;   // negative pitch
-const uint8_t bDown = 22;//20; // positive pitch
-const uint8_t bRight = 21;//18;// negatice yaw
-const uint8_t bLeft = 20;//19;  // positive yaw
-const uint8_t bForward =19;//23;// drive forward
-const uint8_t bBackward = 18;//22;//drive backwards
+const uint8_t bUp = 23;   // negative pitch
+const uint8_t bDown = 22; // positive pitch
+const uint8_t bRight = 21;// negatice yaw
+const uint8_t bLeft = 20; // positive yaw
+const uint8_t bForward =19;// drive forward
+const uint8_t bBackward = 18;//drive backwards
 
 volatile unsigned long last_micros1;
 volatile unsigned long last_micros2;
@@ -24,6 +24,7 @@ volatile unsigned long last_micros3;
 volatile unsigned long last_micros4;
 volatile unsigned long last_micros5;
 volatile unsigned long last_micros6;
+//flags to tell if an interrupt has occured
 volatile bool sUp = LOW;
 volatile bool sDown = LOW;
 volatile bool sRight = LOW;
@@ -83,6 +84,11 @@ void isrBackward()
   }
 }
 
+/*
+If the buttons are released before the debouncing time has passed, the release won't trigger an interrupt
+This function is polled and executes every 'pollIntercal' milliseconds
+It sends the same message that is sent on release of a button
+*/
 void doubleCheckButtonState()
 {
   if((millis() - lastPoll) > pollInterval)

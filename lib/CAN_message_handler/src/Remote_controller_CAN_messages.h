@@ -1,7 +1,13 @@
+/*
+  Header to provide an extra layer of abstraction to the remote controller
+  All the messages the remote controller sends are a variant of drive or stop
+  The CAN messages are encoded in this header
+*/
+
 #ifndef _REMOTE_CONTROLLER_CAN_MESSAGES_H_
 #define _REMOTE_CONTROLLER_CAN_MESSAGES_H_
 
-#include <stdint.h>
+#include <cstdint>
 #include <CAN_message_handler.h>
 
 class Remote_controller_CAN_messages

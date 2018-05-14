@@ -20,16 +20,6 @@ virtual uint8_t getTempo() //get the pre defined standard tempo (0-100%)
   return tempo_;
 }
 
-virtual void setRealTempo(uint8_t realTempo) //Sets the real tempo (0-100%)
-{
-  realTempo_ = realTempo;
-}
-
-virtual uint8_t getRealTempo() //return the real tempo (0-100%)
-{
-  return realTempo_;
-}
-
 virtual void setDirection(bool dir) //sets the direction
 {
   dir_ = dir;
@@ -64,6 +54,17 @@ virtual void driveTo(float position, uint8_t tempo); //drive to absolute positio
 
 
 private:
+
+  virtual void setRealTempo(uint8_t realTempo) //Sets the real tempo (0-100%)
+  {
+    realTempo_ = realTempo;
+  }
+
+  virtual uint8_t getRealTempo() //return the real tempo (0-100%)
+  {
+    return realTempo_;
+  }
+
   bool dir_;
   uint8_t tempo_;
   uint8_t realTempo_;

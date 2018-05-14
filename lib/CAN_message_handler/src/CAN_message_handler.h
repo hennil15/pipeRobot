@@ -85,25 +85,6 @@ private:
   CAN_motor_msg_decoder_encoder motorMsgHandler;
   CANIds _idsToFilter[100];
   uint16_t _widthOfArray;
-  // const CANIds _idsToAlwayFilter[] =
-  // {
-  //   global_event_00,
-  //   global_event_01,
-  //   global_event_02,
-  //   global_event_03,
-  //   global_event_04,
-  //   global_event_05,
-  //   global_event_06,
-  //   global_event_07,
-  //   global_event_08,
-  //   global_event_09,
-  //   global_event_10,
-  //   global_event_11,
-  //   global_event_12,
-  //   global_event_13,
-  //   global_event_14,
-  //   global_event_15
-  // };
 };
 
 #endif //CAN_MESSAGE_HANDLER_H_

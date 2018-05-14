@@ -16,7 +16,7 @@ _dt_us(500), _steadyState(false), _ssCounter(0), _settlingMargin(10)
 
 float Simple_PID::output(const float & err)
 {
-  //warning! micros() overflows after 71.6 minutes (it's an uint32_t type). Code will have runtime errors after that
+  //warning! micros() overflows after 71.6 minutes (it's an uint32_t type). Code will have runtime errors if not fixed
   if((micros()-_last_dt) > _dt_us)
   {
     _last_dt = micros();
@@ -37,6 +37,11 @@ float Simple_PID::output(const float & err)
       if(_ssCounter > _settlingMargin){_steadyState = true;}
     }
     else{_ssCounter = 0;}
+  }
+  //temporary fix to provide protection against overflow of micros()
+  else if(_last_dt > micros())
+  {/*micros() has overflowed, so (micros()-_last_dt) won't be bigger than _dt_us until micros() approaches next overflow*/
+    _last_dt = micros();
   }
   return _output;
 }

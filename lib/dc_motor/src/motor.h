@@ -58,12 +58,13 @@ virtual void startMotor()=0; //starts the motor with a set acceleration
 
 virtual void changeTempo(uint8_t tempo)=0;
 
-virtual void drive(bool dir, uint8_t tempo); // drive indefinately
+virtual void drive(bool dir, uint8_t tempo); // drive until told otherwise
 virtual void drive(float distance, bool dir, uint8_t tempo); //drives the robot a certain distance
 virtual void driveTo(float position, uint8_t tempo); //drive to absolute position
 
 
 private:
+
   bool dir_;
   uint8_t tempo_;
   uint8_t realTempo_;

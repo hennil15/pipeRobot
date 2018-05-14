@@ -9,8 +9,8 @@
 class DRV8838Motor : public Motor
 {
   public:
-    MagneticEncoder_2 encoder; //"has a " inheritance. Magneticencoder object.
-    Simple_PID pid; //"has a" inheritance. Simple_PID object.
+    MagneticEncoder_2 encoder; //"has a " composition. Magneticencoder object.
+    Simple_PID pid; //"has a" composition. Simple_PID object.
 
   DRV8838Motor(uint8_t pwnPin, uint8_t dirPin, uint8_t inA, uint8_t inB);
 
